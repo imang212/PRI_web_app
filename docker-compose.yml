@@ -1,0 +1,40 @@
+services:
+  web_exoplanets:
+      container_name: pri_exoplanets_web
+      build:
+        context: .
+        dockerfile: web/Dockerfile
+      volumes:
+        - ./www:/var/www/html
+      ports:
+        - 8000:80
+      depends_on:
+        - postgres_db_exoplanets
+        - tailwind
+  tailwind:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - ./tailwind_:/app
+      - ./www:/output
+    command: >
+      sh -c "npm install &&
+             npx tailwindcss -i ./input.css -o /output/output.css --minify"
+  postgres_db_exoplanets:
+      container_name: postgres_db_exoplanets
+      image: postgres:latest
+      environment:
+        POSTGRES_DB: app
+        POSTGRES_USER: admin
+        POSTGRES_PASSWORD: admin
+      volumes:
+        - ./db/exoplanets_db.sql:/docker-entrypoint-initdb.d/exoplanets_db.sql
+        - postgres_data:/var/lib/postgres/data/
+  adminer_exoplanets:
+      image: adminer
+      environment:
+        ADMINER_DEFAULT_SERVER: database
+      ports:
+        - 8080:8080
+volumes:
+  postgres_data:
