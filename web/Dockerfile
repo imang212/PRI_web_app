@@ -24,6 +24,7 @@ EOF
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 RUN a2enmod headers rewrite
 
+EXPOSE 80
 WORKDIR /var/www/html
 
 ##WORKDIR /app

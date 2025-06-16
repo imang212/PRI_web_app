@@ -28,12 +28,35 @@ CREATE TABLE staging_exoplanets (
 );
 COPY staging_exoplanets FROM '/data/cleaned_5250.csv' DELIMITER ',' CSV HEADER;
 
+CREATE TABLE temp_exoplanets_2 (
+    pl_name TEXT,
+    pl_pubdate TEXT,
+    releasedate TEXT
+);
+COPY temp_exoplanets_2 FROM '/data/exoplanets_cleaned.csv' DELIMITER ',' CSV HEADER NULL '';
+
 CREATE TABLE staging_exoplanets_2 (
     pl_name TEXT,
     pl_pubdate DATE,
-    releasedate TIMESTAMP,
+    releasedate DATE
 );
-COPY staging_exoplanets_2 FROM '/data/PS_2025.04.28_06.13.44.csv' DELIMITER ',' CSV HEADER;
+INSERT INTO staging_exoplanets_2
+SELECT
+    pl_name,
+    CASE
+        WHEN pl_pubdate = '' OR pl_pubdate IS NULL THEN NULL
+        WHEN pl_pubdate ~ '^\d{4}-(0[1-9]|1[0-2])$' THEN (pl_pubdate || '-01')::DATE
+        WHEN pl_pubdate ~ '^\d{4}-\d{2}-\d{2}$' THEN pl_pubdate::DATE
+        ELSE NULL  -- fallback for invalid formats like '2015-00'
+    END,
+    CASE
+        WHEN releasedate = '' OR releasedate IS NULL THEN NULL
+        WHEN releasedate ~ '^\d{4}-(0[1-9]|1[0-2])$' THEN (releasedate || '-01')::DATE
+        WHEN releasedate ~ '^\d{4}-\d{2}-\d{2}$' THEN releasedate::DATE
+        ELSE NULL
+    END
+FROM temp_exoplanets_2;
+
 
 CREATE TABLE exoplanets AS
 SELECT e.*, n.pl_pubdate, n.releasedate
@@ -81,7 +104,7 @@ CREATE TABLE dim_mass_category AS
             ELSE 'Very High Mass'
         END AS mass_category
     FROM (
-        SELECT DISTINCT mass_multiplier,
+        SELECT DISTINCT mass_multiplier
         FROM exoplanets
         WHERE mass_multiplier IS NOT NULL
     ) t;
@@ -95,7 +118,7 @@ CREATE TABLE dim_distance_category AS
         ELSE 'Far (>1000 ly)'
       END AS distance_category
     FROM (
-        SELECT DISTINCT distance,
+        SELECT DISTINCT distance
         FROM exoplanets
         WHERE distance IS NOT NULL
     ) t;
@@ -109,7 +132,7 @@ CREATE TABLE dim_orbit_category AS
             ELSE 'Long'
         END AS period_class
     FROM (
-        SELECT DISTINCT orbital_period,
+        SELECT DISTINCT orbital_period
         FROM exoplanets
         WHERE orbital_period IS NOT NULL
     ) t;
@@ -123,7 +146,7 @@ CREATE TABLE dim_brightness_category AS
         ELSE 'Very Dim'
       END AS brightness_category
     FROM (
-        SELECT DISTINCT stellar_magnitude,
+        SELECT DISTINCT stellar_magnitude
         FROM exoplanets
         WHERE stellar_magnitude IS NOT NULL
     ) t;
@@ -157,7 +180,7 @@ FROM (
     WHERE releasedate IS NOT NULL
 ) t;
 
-CREATE TABLE exoplanets AS
+CREATE TABLE exoplanets_full AS
 SELECT e.*,
     p.planet_type_id,
     d.detection_method_id,
