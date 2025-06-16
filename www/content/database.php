@@ -5,14 +5,14 @@ class Database {
     private $db = 'app';
     private $user = 'admin';
     private $pass = 'admin';
-    private $charset = 'utf8';
     private $pdo;
 
     public function __construct() {
-        $dsn = "pgsql:host=$this->host;dbname=$this->db;charset=$this->charset";
+        $dsn = "pgsql:host=$this->host;dbname=$this->db";
         try {
             $this->pdo = new PDO($dsn, $this->user, $this->pass);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo->exec("SET NAMES 'UTF8'");
         } catch (PDOException $e) {
             throw new PDOException($e->getMessage(), (int)$e->getCode());
         }

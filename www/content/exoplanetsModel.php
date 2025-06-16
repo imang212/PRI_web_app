@@ -3,29 +3,24 @@ class ExoplanetModel {
     private $db;
 
     public function __construct() {
+        include_once "database.php";
         $database = new Database();
         $this->db = $database->getConnection();
     }
 
     public function getAllExoplanets($limit = 50, $offset = 0, $search = '', $filters = []) {
-        $sql = "SELECT e.*,
-                       pt.planet_type,
-                       dm.detection_method,
-                       mc.mass_category,
-                       dc.distance_category,
-                       oc.period_class,
-                       bc.brightness_category,
-                       de.discovery_era
+        $sql = "SELECT *
                 FROM exoplanets e
-                LEFT JOIN dim_planet_type pt ON e.planet_type_id = pt.planet_type_id
-                LEFT JOIN dim_detection_method dm ON e.detection_method_id = dm.detection_method_id
-                LEFT JOIN dim_mass_category mc ON e.mass_category_id = mc.mass_category_id
-                LEFT JOIN dim_distance_category dc ON e.distance_category_id = dc.distance_category_id
-                LEFT JOIN dim_orbit_category oc ON e.orbit_category_id = oc.orbit_category_id
-                LEFT JOIN dim_brightness_category bc ON e.brightness_category_id = bc.brightness_category_id
-                LEFT JOIN dim_discovery_era de ON e.discovery_era_id = de.discovery_era_id
+                LEFT JOIN dim_planet_type p ON e.planet_type = p.planet_type
+                LEFT JOIN dim_detection_method d ON e.detection_method = d.detection_method
+                LEFT JOIN dim_stellar_type s ON e.distance = s.distance AND e.stellar_magnitude = s.stellar_magnitude
+                LEFT JOIN dim_mass_category m ON e.mass_multiplier = m.mass_multiplier
+                LEFT JOIN dim_distance_category dc ON e.distance = dc.distance
+                LEFT JOIN dim_orbit_category o ON e.orbital_period = o.orbital_period
+                LEFT JOIN dim_brightness_category b ON e.stellar_magnitude = b.stellar_magnitude
+                LEFT JOIN dim_discovery_era de ON e.discovery_year = de.discovery_year
+                LEFT JOIN dim_date dt ON e.releasedate::DATE = dt.date
                 WHERE 1=1";
-
         $params = [];
         // Vyhledávání podle názvu
         if (!empty($search)) {
@@ -34,11 +29,11 @@ class ExoplanetModel {
         }
         // Filtry
         if (!empty($filters['planet_type'])) {
-            $sql .= " AND pt.planet_type = :planet_type";
+            $sql .= " AND p.planet_type = :planet_type";
             $params['planet_type'] = $filters['planet_type'];
         }
         if (!empty($filters['detection_method'])) {
-            $sql .= " AND dm.detection_method = :detection_method";
+            $sql .= " AND d.detection_method = :detection_method";
             $params['detection_method'] = $filters['detection_method'];
         }
         if (!empty($filters['discovery_year_from'])) {
@@ -53,7 +48,6 @@ class ExoplanetModel {
             $sql .= " AND e.distance <= :distance_max";
             $params['distance_max'] = $filters['distance_max'];
         }
-
         $sql .= " ORDER BY e.name LIMIT :limit OFFSET :offset";
         $stmt = $this->db->prepare($sql);
 
@@ -68,8 +62,8 @@ class ExoplanetModel {
 
     public function countExoplanets($search = '', $filters = []) {
         $sql = "SELECT COUNT(*) as total FROM exoplanets e
-                LEFT JOIN dim_planet_type pt ON e.planet_type_id = pt.planet_type_id
-                LEFT JOIN dim_detection_method dm ON e.detection_method_id = dm.detection_method_id
+                LEFT JOIN dim_planet_type pt ON e.planet_type = pt.planet_type
+                LEFT JOIN dim_detection_method dm ON e.detection_method = dm.detection_method
                 WHERE 1=1";
 
         $params = [];
@@ -97,7 +91,6 @@ class ExoplanetModel {
             $sql .= " AND e.distance <= :distance_max";
             $params['distance_max'] = $filters['distance_max'];
         }
-
         $stmt = $this->db->prepare($sql);
         foreach ($params as $key => $value) {
             $stmt->bindValue(':' . $key, $value);
@@ -105,7 +98,21 @@ class ExoplanetModel {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
-
+    public function addExoplanet($data) {
+        $sql = "INSERT INTO exoplanets (name, planet_type, detection_method, discovery_year, mass_earth, radius_earth, orbital_period, distance_ly, temperature, host_star)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            $data['name'], $data['distance'], $data['stellar_magnitude'], $data['planet_type'], $data['detection_method'],
+            $data['discovery_year'], $data['mass_earth'], $data['orbital_radius'],
+            $data['orbital_period']
+        ]);
+    }
+    public function deleteExoplanet($id) {
+        $stmt = $this->db->prepare("DELETE FROM exoplanets WHERE id = :id");
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
     public function getPlanetTypes() {
         $stmt = $this->db->query("SELECT DISTINCT planet_type FROM dim_planet_type ORDER BY planet_type");
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
@@ -138,5 +145,37 @@ class ExoplanetModel {
         }
         return $xml->saveXML();
     }
+    public function importFromXML($xmlFile) {
+        if (!file_exists($xmlFile)) {
+            return false;
+        }
+        $xml = simplexml_load_file($xmlFile);
+        $imported = 0;
+        foreach ($xml->exoplanet as $planetXML) {
+            $data = [
+                'name' => (string)$planetXML->name,
+                'distance' => (float)$planetXML->distance ?: null,
+                'stellar_magnitude' => (float)$planetXML->stellar_magnitude ?: null,
+                'planet_type' => (string)$planetXML->planet_type,
+                'discovery_year' => (int)$planetXML->discovery_year ?: null,
+                'mass_multiplier' => (float)$planetXML->mass_multiplier ?: null,
+                'mass_wrt' => (float)$planetXML->mass_wrt ?: null,
+                'orbital_radius' => (float)$planetXML->orbital_radius ?: null,
+                'orbital_period' => (float)$planetXML->orbital_period ?: null,
+                'eccentricity' => (float)$planetXML->eccentricity ?: null,
+                'detection_method' => (string)$planetXML->detection_method ?: null,
+                'brightness_category' => (string)$planetXML->brightness_category ?: null,
+                'mass_category' => (string)$planetXML->mass_category ?: null,
+                'distance_category' => (string)$planetXML->distance_category ?: null,
+                'period_class' => (string)$planetXML->period_class ?: null,
+                'discovery_era' => (string)$planetXML->discovery_era ?: null,
+            ];
+            if ($this->addExoplanet($data)) {
+                $imported++;
+            }
+        }
+        return $imported;
+    }
+
 }
 ?>
