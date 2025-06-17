@@ -99,13 +99,12 @@ class ExoplanetModel {
         return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
     public function addExoplanet($data) {
-        $sql = "INSERT INTO exoplanets (name, planet_type, detection_method, discovery_year, mass_earth, radius_earth, orbital_period, distance_ly, temperature, host_star)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
+        $sql = "INSERT INTO exoplanets (name, distance, stellar_magnitude, planet_type, discovery_year, mass_multiplier, mass_wrt, orbital_radius, orbital_period, eccentricity, detection_method)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
-            $data['name'], $data['distance'], $data['stellar_magnitude'], $data['planet_type'], $data['detection_method'],
-            $data['discovery_year'], $data['mass_earth'], $data['orbital_radius'],
-            $data['orbital_period']
+            $data['name'], $data['distance'], $data['stellar_magnitude'], $data['planet_type'], $data['discovery_year'], $data['mass_multiplier'], $data['mass_wrt'], $data['orbital_radius'],
+            $data['orbital_period'],$data['eccentricity'], $data['detection_method']
         ]);
     }
     public function deleteExoplanet($id) {
@@ -164,11 +163,6 @@ class ExoplanetModel {
                 'orbital_period' => (float)$planetXML->orbital_period ?: null,
                 'eccentricity' => (float)$planetXML->eccentricity ?: null,
                 'detection_method' => (string)$planetXML->detection_method ?: null,
-                'brightness_category' => (string)$planetXML->brightness_category ?: null,
-                'mass_category' => (string)$planetXML->mass_category ?: null,
-                'distance_category' => (string)$planetXML->distance_category ?: null,
-                'period_class' => (string)$planetXML->period_class ?: null,
-                'discovery_era' => (string)$planetXML->discovery_era ?: null,
             ];
             if ($this->addExoplanet($data)) {
                 $imported++;

@@ -62,6 +62,7 @@ CREATE TABLE exoplanets AS
 SELECT e.*, n.pl_pubdate, n.releasedate
 FROM staging_exoplanets e
 LEFT JOIN staging_exoplanets_2 n ON LOWER(e.name) = LOWER(n.pl_name);
+ALTER TABLE exoplanets ADD COLUMN id SERIAL PRIMARY KEY;
 
 CREATE TABLE dim_planet_type AS
 SELECT ROW_NUMBER() OVER () AS planet_type_id, planet_type

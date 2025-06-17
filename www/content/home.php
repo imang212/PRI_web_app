@@ -4,7 +4,7 @@
         <p class="text-lg md:text-xl max-w-2xl mx-auto text-gray-300 p-10" style="padding-top: 5px; padding-bottom: 30px; font-size: medium;">
             Exoplanety – planety mimo naši sluneční soustavu. Poznej neznámé světy, které mohou skrývat život.
         </p>
-        <a href="?page=exoplanets" class="mt-8 inline-block px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-black font-semibold rounded-lg shadow-lg transition" style="font-size: x-large;">
+        <a href="?page=exoplanets" class="mt-8 inline-block px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-black font-semibold rounded-lg shadow-lg transition" style="font-size: x-large; padding-top: 30px;">
             Prozkoumat
         </a>
     </header>
