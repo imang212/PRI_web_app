@@ -100,7 +100,7 @@ class ExoplanetModel {
     }
     public function addExoplanet($data) {
         $sql = 'INSERT INTO exoplanets ("name", distance, stellar_magnitude, planet_type, discovery_year, mass_multiplier, mass_wrt, orbital_radius, orbital_period, eccentricity, detection_method)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)';
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         $stmt = $this->db->prepare($sql);
         #echo "<pre>"; print_r($data); echo "</pre>";
         return $stmt->execute([
