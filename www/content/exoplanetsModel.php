@@ -99,9 +99,10 @@ class ExoplanetModel {
         return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
     public function addExoplanet($data) {
-        $sql = "INSERT INTO exoplanets (name, distance, stellar_magnitude, planet_type, discovery_year, mass_multiplier, mass_wrt, orbital_radius, orbital_period, eccentricity, detection_method)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)";
+        $sql = 'INSERT INTO exoplanets ("name", distance, stellar_magnitude, planet_type, discovery_year, mass_multiplier, mass_wrt, orbital_radius, orbital_period, eccentricity, detection_method)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)';
         $stmt = $this->db->prepare($sql);
+        #echo "<pre>"; print_r($data); echo "</pre>";
         return $stmt->execute([
             $data['name'], $data['distance'], $data['stellar_magnitude'], $data['planet_type'], $data['discovery_year'], $data['mass_multiplier'], $data['mass_wrt'], $data['orbital_radius'],
             $data['orbital_period'],$data['eccentricity'], $data['detection_method']
@@ -120,10 +121,22 @@ class ExoplanetModel {
         $stmt = $this->db->query("SELECT DISTINCT detection_method FROM dim_detection_method ORDER BY detection_method");
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
-
+    public function validateXMLWithXSD($xmlContent, $xsdPath) {
+        $dom = new DOMDocument();
+        $dom->loadXML($xmlContent);
+        libxml_use_internal_errors(true);
+        $isValid = $dom->schemaValidate($xsdPath);
+        if (!$isValid) {
+            $errors = libxml_get_errors();
+            foreach ($errors as $error) {
+                echo "XSD Error: " . $error->message . "<br>";
+            }
+            libxml_clear_errors();
+        }
+        return $isValid;
+    }
     public function exportToXML($search = '', $filters = []) {
         $exoplanets = $this->getAllExoplanets(10000, 0, $search, $filters); // Export všech nalezených
-
         $xml = new DOMDocument('1.0', 'UTF-8');
         $xml->formatOutput = true;
 
@@ -132,18 +145,30 @@ class ExoplanetModel {
         $root->setAttribute('total_count', count($exoplanets));
         $xml->appendChild($root);
 
+        $selectedColumns = ['name', 'distance', 'stellar_magnitude', 'planet_type', 'discovery_year', 'mass_multiplier', 'mass_wrt', 'orbital_radius', 'orbital_period', 'eccentricity', 'detection_method'];
+        $validCount = 0;
         foreach ($exoplanets as $planet) {
+            if (empty($planet['name'])) {
+                continue;
+            }
             $planetElement = $xml->createElement('exoplanet');
-            foreach ($planet as $key => $value) {
-                if ($value !== null && $value !== '') {
-                    $element = $xml->createElement($key, htmlspecialchars($value));
+
+            foreach ($selectedColumns as $key) {
+                if (isset($planet[$key]) && $planet[$key] !== '') {
+                    $element = $xml->createElement($key, htmlspecialchars($planet[$key]));
                     $planetElement->appendChild($element);
                 }
             }
             $root->appendChild($planetElement);
+            $validCount++;
+        }
+        $root->setAttribute('total_count', $validCount);
+        if (!$this->validateXMLWithXSD($xml->saveXML(), __DIR__ . '/exoplanets.xsd')) {
+            die("XML is not valid.");
         }
         return $xml->saveXML();
     }
+
     public function importFromXML($xmlFile) {
         if (!file_exists($xmlFile)) {
             return false;
@@ -152,24 +177,27 @@ class ExoplanetModel {
         $imported = 0;
         foreach ($xml->exoplanet as $planetXML) {
             $data = [
-                'name' => (string)$planetXML->name,
-                'distance' => (float)$planetXML->distance ?: null,
-                'stellar_magnitude' => (float)$planetXML->stellar_magnitude ?: null,
-                'planet_type' => (string)$planetXML->planet_type,
-                'discovery_year' => (int)$planetXML->discovery_year ?: null,
-                'mass_multiplier' => (float)$planetXML->mass_multiplier ?: null,
-                'mass_wrt' => (float)$planetXML->mass_wrt ?: null,
-                'orbital_radius' => (float)$planetXML->orbital_radius ?: null,
-                'orbital_period' => (float)$planetXML->orbital_period ?: null,
-                'eccentricity' => (float)$planetXML->eccentricity ?: null,
-                'detection_method' => (string)$planetXML->detection_method ?: null,
+                'name' => trim((string)$planetXML->name) ?: null,
+                'distance' => isset($planetXML->distance) && trim($planetXML->distance) !== '' ? (float)$planetXML->distance : null,
+                'stellar_magnitude' => isset($planetXML->stellar_magnitude) && trim($planetXML->stellar_magnitude) !== '' ? (float)$planetXML->stellar_magnitude : null,
+                'planet_type' => trim((string)$planetXML->planet_type) ?: null,
+                'discovery_year' => isset($planetXML->discovery_year) && trim($planetXML->discovery_year) !== '' ? (int)$planetXML->discovery_year : null,
+                'mass_multiplier' => isset($planetXML->mass_multiplier) && trim($planetXML->mass_multiplier) !== '' ? (float)$planetXML->mass_multiplier : null,
+                'mass_wrt' => isset($planetXML->mass_wrt) && trim($planetXML->mass_wrt) !== '' ? (float)$planetXML->mass_wrt : null,
+                'orbital_radius' => isset($planetXML->orbital_radius) && trim($planetXML->orbital_radius) !== '' ? (float)$planetXML->orbital_radius : null,
+                'orbital_period' => isset($planetXML->orbital_period) && trim($planetXML->orbital_period) !== '' ? (float)$planetXML->orbital_period : null,
+                'eccentricity' => isset($planetXML->eccentricity) && trim($planetXML->eccentricity) !== '' ? (float)$planetXML->eccentricity : null,
+                'detection_method' => trim((string)$planetXML->detection_method) ?: null,
             ];
+
             if ($this->addExoplanet($data)) {
                 $imported++;
             }
         }
+        if (!$this->validateXMLWithXSD($xml->saveXML(), __DIR__ . '/exoplanets.xsd')) {
+            die("XML is not valid.");
+        }
         return $imported;
     }
-
 }
 ?>

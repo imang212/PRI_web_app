@@ -66,7 +66,7 @@ $yearTo = isset($_GET['year_to']) ? htmlspecialchars($_GET['year_to']) : '';
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;background-color:#111827;color:#fff}.form-container{background-color:#1f2937;border-radius:12px;border:2px solid #374151;padding:24px;margin-bottom:32px;max-width:1250px;margin:0 auto}.form-content{display:flex;flex-direction:column;gap:20px}.form-row{display:flex;flex-wrap:wrap;gap:16px}.form-row.search-row .form-group{flex:1;min-width:300px}.form-row.filter-row .form-group{flex:1;min-width:250px}.form-group{display:flex;flex-direction:column}.form-label{color:#67e8f9;margin-bottom:8px;font-size:16px;font-weight:500}.form-input,.form-select{width:100%;padding:12px;background-color:#374151;color:#fff;border:2px solid #4b5563;border-radius:8px;font-size:16px;transition:border-color .3s}.form-input:focus,.form-select:focus{outline:none;border-color:#22d3ee}.form-input::placeholder{color:#9ca3af}.button-row{display:flex;flex-wrap:wrap;gap:16px;margin-top:8px}.btn{padding:12px 24px;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;transition:all .3s;min-width:140px}.btn-primary{background-color:#06b6d4;color:#000}.btn-primary:hover{background-color:#0891b2}.btn-secondary{background-color:#4b5563;color:#fff}.btn-secondary:hover{background-color:#374151}.btn-success{background-color:#059669;color:#fff}.btn-success:hover{background-color:#047857}@media(max-width:768px){.form-row.search-row .form-group,.form-row.filter-row .form-group{min-width:100%}.btn{min-width:100%}.form-container{padding:16px}}.results-info{margin-bottom:24px;color:#d1d5db;font-size:16px}.results-count{color:#22d3ee;font-weight:bold}.exoplanet-grid{display:flex;flex-wrap:wrap;gap:24px;margin-bottom:32px}.exoplanet-card{background-color:#1f2937;border:2px solid #374151;border-radius:12px;padding:24px;flex:1;min-width:450px;box-shadow:0 4px 6px rgba(0,0,0,.1);transition:all .3s}.exoplanet-card:hover{box-shadow:0 20px 25px rgba(0,0,0,.25);transform:translateY(-2px)}.planet-name{color:#67e8f9;font-size:20px;font-weight:bold;margin-bottom:12px}.planet-details{display:flex;flex-wrap:wrap;gap:16px;font-size:14px}.detail-item{flex:1;min-width:180px;display:flex;flex-direction:column;gap:2px}.detail-label{color:#9ca3af}.detail-value{color:#fff;font-weight:500}.planet-tags{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}.tag{padding:4px 8px;border-radius:4px;color:#fff;font-size:12px;font-weight:500}.tag-mass{background-color:#2563eb}.tag-distance{background-color:#059669}.tag-era{background-color:#7c3aed}.pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:32px}.pagination-btn{padding:8px 16px;border:2px solid #4b5563;border-radius:8px;text-decoration:none;font-weight:500;transition:all .3s;color:#fff;background-color:#374151;min-width:44px;text-align:center}.pagination-btn:hover{background-color:#4b5563;transform:translateY(-1px)}.pagination-btn.active{background-color:#06b6d4;color:#000;border-color:#06b6d4}.pagination-btn.active:hover{background-color:#0891b2}@media(max-width:1024px){.exoplanet-card{min-width:100%}}@media(max-width:768px){.container{padding:0 10px}.exoplanet-card{padding:16px;min-width:100%}.detail-item{min-width:140px}.pagination{flex-wrap:wrap}.pagination-btn{min-width:40px;padding:6px 12px}}@media(max-width:480px){.detail-item{min-width:100%}.planet-details{gap:12px}
 .alert { padding:16px; padding-top: 0; padding-bottom: 10px;margin:0;border-radius:8px; border:2px solid; font-size:16px; font-weight:500; display:flex; align-items:center; gap:8px; box-shadow:0 4px 6px rgba(0,0,0,0.1); animation:slideInDown 0.3s ease-out; }.alert.success{background-color:#065f46;border-color:#059669;color:#d1fae5;}.alert.success:before{content:"✅";font-size:18px;}.alert.error{background-color:#7f1d1d;border-color:#dc2626;color:#fecaca;}.alert.error:before{content:"❌";font-size:18px;}.alert.warning{background-color:#92400e;border-color:#d97706;color:#fed7aa;}.alert.warning:before{content:"⚠️";font-size:18px;}.alert.info{background-color:#1e3a8a;border-color:#3b82f6;color:#dbeafe;}.alert.info:before{content:"ℹ️";font-size:18px;}@keyframes slideInDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}.alert:hover{transform:translateY(-1px);box-shadow:0 6px 12px rgba(0,0,0,0.15);transition:all 0.2s ease;}.alert .close-btn{margin-left:auto;background:none;border:none;color:inherit;font-size:20px;cursor:pointer;padding:0;opacity:.7;transition:opacity .2s ease;}.alert .close-btn:hover{opacity:1;}@media (max-width:768px){.alert{padding:12px 16px;font-size:14px;margin:12px 0;}.alert:before{font-size:16px;}}.messages-container{position:fixed;z-index:1000;max-width:400px;}.messages-container .alert{margin-bottom:10px; padding-top: -40px;box-shadow:0 8px 25px rgba(0,0,0,0.2);}.alert.inline{position:relative;margin:16px auto;max-width:800px;}}</style>
 <div id="main" class="pt-50 min-h-screen">
-    <div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto px-4 py-8" style="margin-top: -50px;">
         <h1 class="text-4xl text-lg font-bold text-cyan-400 mb-10 text-center" style="font-size: 24px; margin-bottom: 5px;">Katalog Exoplanet</h1>
         <div class="messages-container" style="min-height: 15px; max-height: 15px; padding-top: -10px;">
             <?php if (isset($message)): ?>
@@ -125,7 +125,7 @@ $yearTo = isset($_GET['year_to']) ? htmlspecialchars($_GET['year_to']) : '';
             </div>
         </form>
     </div>
-        <div class="section mb-10" style="margin-bottom: 30px;">
+        <div class="section mb-10" style="margin-bottom: 10px;">
             <form method="POST" enctype="multipart/form-data">
                 <div class="button-row">
                     <div class="form-group" style="max-width: 400px;">
@@ -137,7 +137,7 @@ $yearTo = isset($_GET['year_to']) ? htmlspecialchars($_GET['year_to']) : '';
             </form>
         </div>
 
-        <div class="results-info mb-6">
+        <div class="results-info">
             <p class="text-gray-300">
                 Nalezeno <strong class="results-count text-cyan-400"><?php echo number_format($totalCount); ?></strong> exoplanet
                 <?php if ($search || array_filter($filters)): ?>
@@ -145,7 +145,7 @@ $yearTo = isset($_GET['year_to']) ? htmlspecialchars($_GET['year_to']) : '';
                 <?php endif; ?>
             </p>
         </div>
-        <div class="exoplanet-grid grid lg:grid-cols-2 gap-6 mb-8">
+        <div class="exoplanet-grid grid lg:grid-cols-2 gap-6 mb-8" style="margin-top: -15px;">
             <?php foreach ($exoplanets as $planet): ?>
                 <div class="exoplanet-card bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition">
                     <h3 class="planet-name text-xl font-bold text-cyan-300 mb-3"><?php echo htmlspecialchars($planet['name']); ?></h3>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="exoplanets">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="exoplanet" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="name" type="xs:string"/>
+              <xs:element name="distance" type="xs:double" minOccurs="0"/>
+              <xs:element name="stellar_magnitude" type="xs:double" minOccurs="0"/>
+              <xs:element name="planet_type" type="xs:string" minOccurs="0"/>
+              <xs:element name="discovery_year" type="xs:integer" minOccurs="0"/>
+              <xs:element name="mass_multiplier" type="xs:double" minOccurs="0"/>
+              <xs:element name="mass_wrt" type="xs:string" minOccurs="0"/>
+              <xs:element name="orbital_radius" type="xs:double" minOccurs="0"/>
+              <xs:element name="orbital_period" type="xs:double" minOccurs="0"/>
+              <xs:element name="eccentricity" type="xs:double" minOccurs="0"/>
+              <xs:element name="detection_method" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="exported_at" type="xs:string" use="optional"/>
+      <xs:attribute name="total_count" type="xs:integer" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
