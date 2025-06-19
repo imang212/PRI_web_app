@@ -28,6 +28,97 @@ CREATE TABLE staging_exoplanets (
 );
 COPY staging_exoplanets FROM '/data/cleaned_5250.csv' DELIMITER ',' CSV HEADER;
 
+
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Canum Venaticorum', 'CVn', 'g') WHERE name LIKE '%Canum Venaticorum%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Canis Majoris', 'CMa', 'g') WHERE name LIKE '%Canis Majoris%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Canis Minoris', 'CMi', 'g') WHERE name LIKE '%Canis Minoris%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Comae Berenices', 'Com', 'g') WHERE name LIKE '%Comae Berenices%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Coronae Australis', 'CrA', 'g') WHERE name LIKE '%Coronae Australis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Coronae Borealis', 'CrB', 'g') WHERE name LIKE '%Coronae Borealis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Leonis Minoris', 'LMi', 'g') WHERE name LIKE '%Leonis Minoris%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Piscis Austrini', 'PsA', 'g') WHERE name LIKE '%Piscis Austrini%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Trianguli Australis', 'TrA', 'g') WHERE name LIKE '%Trianguli Australis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Ursae Majoris', 'UMa', 'g') WHERE name LIKE '%Ursae Majoris%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Ursae Minoris', 'UMi', 'g') WHERE name LIKE '%Ursae Minoris%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Andromedae', 'And', 'g') WHERE name LIKE '%Andromedae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Antliae', 'Ant', 'g') WHERE name LIKE '%Antliae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Apodis', 'Aps', 'g') WHERE name LIKE '%Apodis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Aquarii', 'Aqr', 'g') WHERE name LIKE '%Aquarii%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Aquilae', 'Aql', 'g') WHERE name LIKE '%Aquilae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Arae', 'Ara', 'g') WHERE name LIKE '%Arae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Arietis', 'Ari', 'g') WHERE name LIKE '%Arietis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Aurigae', 'Aur', 'g') WHERE name LIKE '%Aurigae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Bootis', 'Boo', 'g') WHERE name LIKE '%Bootis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Caeli', 'Cae', 'g') WHERE name LIKE '%Caeli%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Camelopardalis', 'Cam', 'g') WHERE name LIKE '%Camelopardalis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Cancri', 'Cnc', 'g') WHERE name LIKE '%Cancri%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Capricorni', 'Cap', 'g') WHERE name LIKE '%Capricorni%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Carinae', 'Car', 'g') WHERE name LIKE '%Carinae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Cassiopeiae', 'Cas', 'g') WHERE name LIKE '%Cassiopeiae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Centauri', 'Cen', 'g') WHERE name LIKE '%Centauri%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Cephei', 'Cep', 'g') WHERE name LIKE '%Cephei%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Ceti', 'Cet', 'g') WHERE name LIKE '%Ceti%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Chamaeleontis', 'Cha', 'g') WHERE name LIKE '%Chamaeleontis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Circini', 'Cir', 'g') WHERE name LIKE '%Circini%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Columbae', 'Col', 'g') WHERE name LIKE '%Columbae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Corvi', 'Crv', 'g') WHERE name LIKE '%Corvi%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Crateris', 'Crt', 'g') WHERE name LIKE '%Crateris%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Crucis', 'Cru', 'g') WHERE name LIKE '%Crucis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Cygni', 'Cyg', 'g') WHERE name LIKE '%Cygni%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Delphini', 'Del', 'g') WHERE name LIKE '%Delphini%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Doradus', 'Dor', 'g') WHERE name LIKE '%Doradus%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Draconis', 'Dra', 'g') WHERE name LIKE '%Draconis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Equulei', 'Equ', 'g') WHERE name LIKE '%Equulei%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Eridani', 'Eri', 'g') WHERE name LIKE '%Eridani%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Fornacis', 'For', 'g') WHERE name LIKE '%Fornacis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Geminorum', 'Gem', 'g') WHERE name LIKE '%Geminorum%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Gruis', 'Gru', 'g') WHERE name LIKE '%Gruis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Herculis', 'Her', 'g') WHERE name LIKE '%Herculis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Horologii', 'Hor', 'g') WHERE name LIKE '%Horologii%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Hydrae', 'Hya', 'g') WHERE name LIKE '%Hydrae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Hydri', 'Hyi', 'g') WHERE name LIKE '%Hydri%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Indi', 'Ind', 'g') WHERE name LIKE '%Indi%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Lacertae', 'Lac', 'g') WHERE name LIKE '%Lacertae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Leonis', 'Leo', 'g') WHERE name LIKE '%Leonis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Leporis', 'Lep', 'g') WHERE name LIKE '%Leporis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Librae', 'Lib', 'g') WHERE name LIKE '%Librae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Lupi', 'Lup', 'g') WHERE name LIKE '%Lupi%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Lyncis', 'Lyn', 'g') WHERE name LIKE '%Lyncis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Lyrae', 'Lyr', 'g') WHERE name LIKE '%Lyrae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Mensae', 'Men', 'g') WHERE name LIKE '%Mensae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Microscopii', 'Mic', 'g') WHERE name LIKE '%Microscopii%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Monocerotis', 'Mon', 'g') WHERE name LIKE '%Monocerotis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Muscae', 'Mus', 'g') WHERE name LIKE '%Muscae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Normae', 'Nor', 'g') WHERE name LIKE '%Normae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Octantis', 'Oct', 'g') WHERE name LIKE '%Octantis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Ophiuchi', 'Oph', 'g') WHERE name LIKE '%Ophiuchi%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Orionis', 'Ori', 'g') WHERE name LIKE '%Orionis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Pavonis', 'Pav', 'g') WHERE name LIKE '%Pavonis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Pegasi', 'Peg', 'g') WHERE name LIKE '%Pegasi%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Persei', 'Per', 'g') WHERE name LIKE '%Persei%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Phoenicis', 'Phe', 'g') WHERE name LIKE '%Phoenicis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Pictoris', 'Pic', 'g') WHERE name LIKE '%Pictoris%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Piscium', 'Psc', 'g') WHERE name LIKE '%Piscium%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Puppis', 'Pup', 'g') WHERE name LIKE '%Puppis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Pyxidis', 'Pyx', 'g') WHERE name LIKE '%Pyxidis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Reticuli', 'Ret', 'g') WHERE name LIKE '%Reticuli%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Sagittae', 'Sge', 'g') WHERE name LIKE '%Sagittae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Sagittarii', 'Sgr', 'g') WHERE name LIKE '%Sagittarii%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Scorpii', 'Sco', 'g') WHERE name LIKE '%Scorpii%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Sculptoris', 'Scl', 'g') WHERE name LIKE '%Sculptoris%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Scuti', 'Sct', 'g') WHERE name LIKE '%Scuti%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Serpentis', 'Ser', 'g') WHERE name LIKE '%Serpentis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Sextantis', 'Sex', 'g') WHERE name LIKE '%Sextantis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Tauri', 'Tau', 'g') WHERE name LIKE '%Tauri%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Telescopii', 'Tel', 'g') WHERE name LIKE '%Telescopii%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Trianguli', 'Tri', 'g') WHERE name LIKE '%Trianguli%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Tucanae', 'Tuc', 'g') WHERE name LIKE '%Tucanae%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Velorum', 'Vel', 'g') WHERE name LIKE '%Velorum%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Virginis', 'Vir', 'g') WHERE name LIKE '%Virginis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Volantis', 'Vol', 'g') WHERE name LIKE '%Volantis%';
+UPDATE staging_exoplanets SET name = regexp_replace(name, 'Vulpeculae', 'Vul', 'g') WHERE name LIKE '%Vulpeculae%';
+
+
 CREATE TABLE temp_exoplanets_2 (
     pl_name TEXT,
     pl_pubdate TEXT,
@@ -50,19 +141,29 @@ SELECT
         ELSE NULL  -- fallback for invalid formats like '2015-00'
     END,
     CASE
-        WHEN releasedate = '' OR releasedate IS NULL THEN NULL
-        WHEN releasedate ~ '^\d{4}-(0[1-9]|1[0-2])$' THEN (releasedate || '-01')::DATE
-        WHEN releasedate ~ '^\d{4}-\d{2}-\d{2}$' THEN releasedate::DATE
+        -- Pokus o přímou konverzi
+        WHEN trim(releasedate) ~ '^\d{4}-\d{2}-\d{2}$' THEN trim(releasedate)::DATE
+        -- Rok-měsíc + první den
+        WHEN trim(releasedate) ~ '^\d{4}-(0[1-9]|1[0-2])$' THEN (trim(releasedate) || '-01')::DATE
+        -- Jen rok + první den roku
+        WHEN trim(releasedate) ~ '^\d{4}$' THEN (trim(releasedate) || '-01-01')::DATE
+        -- Formát bez leading zeros (2023-9-1)
+        WHEN trim(releasedate) ~ '^\d{4}-\d{1,2}-\d{1,2}$' THEN trim(releasedate)::DATE
         ELSE NULL
     END
 FROM temp_exoplanets_2;
 
-
 CREATE TABLE exoplanets AS
-SELECT e.*, n.pl_pubdate, n.releasedate
+SELECT
+    e.*,
+    n.pl_name,
+    n.pl_pubdate,
+    n.releasedate
 FROM staging_exoplanets e
 LEFT JOIN staging_exoplanets_2 n ON LOWER(e.name) = LOWER(n.pl_name);
+
 ALTER TABLE exoplanets ADD COLUMN id SERIAL PRIMARY KEY;
+
 
 CREATE TABLE dim_planet_type AS
 SELECT ROW_NUMBER() OVER () AS planet_type_id, planet_type
