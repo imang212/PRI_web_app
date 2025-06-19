@@ -252,6 +252,7 @@ $yearTo = isset($_GET['year_to']) ? htmlspecialchars($_GET['year_to']) : '';
                         </div>
                     <?php endif; ?>
                 </div>
+                <?php //print_r($planet); ?>
             <?php endforeach; ?>
         </div>
         <?php if ($totalPages > 1): ?>
